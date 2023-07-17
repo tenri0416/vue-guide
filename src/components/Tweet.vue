@@ -7,10 +7,13 @@ import TweetList from './TweetList.vue';
 const tweets = ref([{ id: 0, description: 'hell' }, { id: 1, description: 'no' }]);
 const inputtingDescription=ref<string>('');
 
-const postTweet = () => {
-  const tweet={id:Math.random(),description:inputtingDescription.value}
+const postTweet = (description:string) => {
+  const tweet={id:Math.random(),description}
   tweets.value.push(tweet);
-  inputtingDescription.value='';
+}
+
+const consolePost=(sample:string)=>{
+  console.log(sample);
 }
 
 const deleteTweet=(id:number)=>{
@@ -21,11 +24,13 @@ const deleteTweet=(id:number)=>{
 <template>
   <div class="container">
     <h1>Tweeter</h1>
-      <TweetPostForm/>
+                  <!-- @post-tweetは子コンポーネントのemitで定義した名前 -->
+                  <!-- 子コンポーネントで定義したemit名を＠emit名で記述して子コンポーネントに渡したい関数をかく -->
+      <TweetPostForm @post-tweet="postTweet" @sample-post="consolePost"/>
     <div  class="tweet-container">
       <p v-show="tweets.length <= 0">No twwets have been added</p>
       <ul>
-        <TweetList :tweets="tweets"/>
+        <TweetList :tweets="tweets" @delete-tweet="deleteTweet"/>
       </ul>
     </div>
   </div>
