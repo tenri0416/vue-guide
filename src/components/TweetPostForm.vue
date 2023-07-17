@@ -1,19 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref,defineEmits } from 'vue'
 
 const inputtingDescription=ref<string>('')
+//resでリアクティブな値を指定する
 
+const sampleInput=ref<string>('');
+
+const emit=defineEmits(['post-tweet','sample-post']);
+//emitで親コンポーネントから関数を取得するために定義する
+
+
+//ぽたんを押した時にemitで親のコンポーネントの関数の処理がされるように記述する
 const postTweet=()=>{
-  
+  emit('post-tweet', inputtingDescription.value)
+}
+
+
+const postSample=()=>{
+emit('sample-post',sampleInput.value);
 }
 
 </script>
 
 <template>
   <div class="form-container">
+    <!-- インプットタグに値が入った時にrefの変数に値が入るようにする -->
     <input v-model="inputtingDescription" />
+      <!-- ボタンが押された時にpostTweet関数の処理がされるように定義をする -->
       <button class="save-button" @click="postTweet">post</button>
   </div>
+  <input v-model="sampleInput"/>
+  <button @click="postSample">ボタン</button>
 </template>
 
 <style>
